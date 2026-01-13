@@ -1,0 +1,15 @@
+<div class="wraper">
+  {% for collection in collections %}
+    <h2>{{ collection.title }}</h2>
+    {% unless collection.description == blank %}
+      <p>{{ collection.description }}</p>
+    {% endunless %}
+
+    {% for product in collection.products %}
+      <img src="{{ product | image_url }}">
+      <p>{{ product.price | money }}</p>
+    {% else %}
+      <p>There is no products in {{ collection.title }}</p>
+    {% endfor %}
+  {% endfor %}
+</div>

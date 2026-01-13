@@ -1,0 +1,81 @@
+<section class="two-grids-section">
+  <div class="container">
+    <!-- Grid 1 -->
+    <div class="grid">
+      <h2>{{ section.settings.grid_1_heading }}</h2>
+      <p>{{ section.settings.grid_1_description }}</p>
+    </div>
+
+    <div class="grid">
+      <h2>{{ section.settings.grid_2_heading }}</h2>
+      <p>{{ section.settings.grid_2_description }}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+    .two-grids-section .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 40px;
+    }
+
+    .two-grids-section .grid h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .two-grids-section .grid p {
+      font-size: 16px;
+      color: #555;
+    }
+    .two-grids-section .grid {
+      text-align: left;
+      padding: 0;
+  }
+
+    @media (max-width: 768px) {
+      .two-grids-section .container {
+        grid-template-columns: 1fr;
+      }
+    }
+</style>
+
+{% schema %}
+{
+  "name": "Two Grids",
+  "settings": [
+    {
+      "type": "text",
+      "id": "grid_1_heading",
+      "label": "Grid 1 Heading",
+      "default": "Grid 1 Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "grid_1_description",
+      "label": "Grid 1 Description",
+      "default": "This is the description for the first grid."
+    },
+    {
+      "type": "text",
+      "id": "grid_2_heading",
+      "label": "Grid 2 Heading",
+      "default": "Grid 2 Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "grid_2_description",
+      "label": "Grid 2 Description",
+      "default": "This is the description for the second grid."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Two Grids",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

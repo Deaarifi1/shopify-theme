@@ -1,0 +1,270 @@
+<section>
+  <div class="collection-navbar-section2">
+    <h2 class="text-center2">{{ section.settings.section_title }}</h2>
+
+    <div class="navbar-wrapper2">
+      <ul class="navbar-links2">
+        {% for block in section.blocks %}
+          {% assign collection = collections[block.settings.link_collection] %}
+          <li>
+            <a href="#" class="collection-link2" data-collection-id="collection-{{ block.id }}">
+              {{ block.settings.link_text }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="collection-products-container2">
+      {% for block in section.blocks %}
+        <div id="collection-{{ block.id }}" class="collection-products2" style="display: none;">
+          {% assign collection = collections[block.settings.link_collection] %}
+          {% if collection and collection.products.size > 0 %}
+            <div class="products-wrapper2">
+              <div class="product-slider-wrapper2">
+                <div class="product-slider2" data-products-length="{{ collection.products.size }}">
+                  {% for product in collection.products limit: 4 %}
+                    <div class="product-item2">
+                      <a href="{{ product.url }}">
+                        <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}">
+                      </a>
+                      <p class="product-title2">{{ product.title }}</p>
+                      <div class="product-pricing2">
+                        <p class="product-price2">{{ product.price | money }}</p>
+                        {% if product.compare_at_price > product.price %}
+                          <p class="sale-price2">{{ product.compare_at_price | money }}</p>
+                          <span class="sale-percentage2">
+                            {{
+                              product.compare_at_price
+                              | minus: product.price
+                              | times: 100.0
+                              | divided_by: product.compare_at_price
+                              | round
+                            -}}
+                            %
+                          </span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <p>No products available in this collection.</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // For each section, ensure the first collection is shown by default
+    document.querySelectorAll('.collection-products-container2').forEach(function (container) {
+      container.querySelector('.collection-products2').style.display = 'block';
+    });
+
+    // Handle the collection switching
+    document.querySelectorAll('.collection-navbar-section2').forEach(function (section) {
+      var links = section.querySelectorAll('.collection-link2');
+
+      links.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          // Hide all collections in this section
+          var container = section.querySelector('.collection-products-container2');
+          container.querySelectorAll('.collection-products2').forEach(function (collection) {
+            collection.style.display = 'none';
+          });
+
+          // Show the clicked collection
+          var collectionId = this.getAttribute('data-collection-id');
+          section.querySelector('#' + collectionId).style.display = 'block';
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  /* General Styles */
+  .collection-navbar-section2 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .navbar-wrapper2 {
+    margin: 20px 0;
+  }
+
+  .navbar-links2 {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .navbar-links2 li {
+    display: inline-block;
+  }
+
+  .navbar-links2 a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #e3e1e1;
+  }
+
+  .navbar-links2 a:hover {
+    background-color: #fff;
+    border-radius: 5px;
+  }
+
+  .collection-products-container2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .products-wrapper2 {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .product-slider-wrapper2 {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .product-slider2 {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .product-item2 {
+    text-align: center;
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .product-item2 img {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .product-title2 {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: left;
+  }
+
+  .product-pricing2 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-price2,
+  .sale-price2 {
+    font-size: 12px;
+  }
+
+  .product-price2 {
+    color: #333;
+  }
+
+  .sale-price2 {
+    color: grey;
+    text-decoration: line-through;
+    font-size: 10px;
+  }
+
+  .sale-percentage2 {
+    background-color: #2ecc71;
+    border-radius: 10px;
+    padding: 2px 5px;
+    color: #fff;
+    font-size: 10px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .navbar-links2 {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-item2 {
+      width: 150px;
+    }
+
+    .product-slider2 {
+      gap: 10px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .navbar-links2 {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .product-item2 {
+      width: 120px;
+    }
+
+    .collection-products-container2 {
+      flex-direction: column;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "featured collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Explore Our Collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Collection Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text"
+        },
+        {
+          "type": "collection",
+          "id": "link_collection",
+          "label": "Choose Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "featured-collection",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

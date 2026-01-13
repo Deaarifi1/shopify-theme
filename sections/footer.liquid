@@ -1,0 +1,168 @@
+<section>
+  <div class="custom-footer-section">
+    <div class="footer-content-wrapper">
+      {% for block in section.blocks %}
+        {% if block.type == 'text_block' %}
+          <div class="footer-text-block">
+            <h2 class="h2">{{ block.settings.heading }}</h2>
+            <p class="p">{{ block.settings.subtext }}</p>
+          </div>
+        {% endif %}
+
+        {% if block.type == 'quick_links' %}
+          <div class="footer-quick-links">
+            <h5 class="h5">{{ block.settings.quick_links_heading }}</h5>
+            <ul>
+              {% for link in linklists[block.settings.quick_link_menu].links %}
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      <div class="footer-social-media">
+        <div class="email-box">
+          <input type="email" placeholder="Enter your email">
+        </div>
+        <div class="social-icons">
+          {% for block in section.blocks %}
+            {% if block.type == 'social_media' %}
+              <a href="{{ block.settings.social_link }}"
+                ><img src="{{ block.settings.social_icon | img_url: 'thumb' }}" alt="Social Icon"
+              ></a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .custom-footer-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f8f8f8;
+    position: relative;
+  }
+  .h2, .h5 {
+    font-weight: bold;
+  }
+
+  .footer-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .footer-text-block, .footer-quick-links {
+    flex: 1;
+    margin: 0 20px;
+  }
+    .footer-text-block p,
+  .footer-quick-links ul li a,
+  .footer-social-media .email-box input {
+    font-size: 13px;
+  }
+
+  .footer-quick-links ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-quick-links ul li a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .footer-social-media {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    text-align: right;
+    width: 250px;
+  }
+
+  .footer-social-media .email-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .footer-social-media .social-icons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .footer-social-media .social-icons a {
+    margin-right: 10px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text Block",
+      "settings": [
+        {
+          "id": "heading",
+          "type": "text",
+          "label": "Heading"
+        },
+        {
+          "id": "subtext",
+          "type": "text",
+          "label": "Subtext"
+        }
+      ]
+    },
+    {
+      "type": "quick_links",
+      "name": "Quick Links",
+      "settings": [
+        {
+          "id": "quick_links_heading",
+          "type": "text",
+          "label": "Quick Links Heading"
+        },
+        {
+          "id": "quick_link_menu",
+          "type": "link_list",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "social_media",
+      "name": "Social Media Icons",
+      "settings": [
+        {
+          "id": "social_icon",
+          "type": "image_picker",
+          "label": "Social Media Icon"
+        },
+        {
+          "id": "social_link",
+          "type": "url",
+          "label": "Social Media Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}

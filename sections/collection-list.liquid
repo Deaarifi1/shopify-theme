@@ -1,0 +1,183 @@
+<section id="explore-collections3" class="explore-collections-section3">
+  <div class="container3">
+    <h2 class="section-title3">{{ section.settings.heading_text }}</h2>
+
+    <div class="collections-slider3">
+      <div class="collections-wrapper3">
+        {% for collection in section.settings.collections %}
+          <div class="collection-item3">
+            <a href="{{ collection.url }}">
+              <img src="{{ collection.image | img_url: 'original' }}" alt="{{ collection.title }}">
+
+              <div class="collection-overlay3">
+                <button class="collection-button3">{{ collection.title }}</button>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .explore-collections-section3 {
+    text-align: center;
+    padding: 50px 0;
+  }
+  .explore-collections-sectionn .section-title3 {
+    font-size: 25px;
+    margin-bottom: 30px;
+  }
+  .collections-wrapper3 {
+    display: flex;
+    gap: 20px;
+    scroll-snap-type: x mandatory;
+    margin: 50px;
+    overflow-x: auto;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+    display: none;
+  }
+  }
+  .collection-item3 {
+    position: relative;
+    scroll-snap-align: start;
+  }
+  .collection-item3 img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  .collection-overlay3 {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+  }
+  .collection-button3 {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .collection-button3:hover{
+    background-color: black;
+    color: white;
+  }
+  .collections-slider3 {
+    position: relative;
+    max-width: 100%;
+
+     @media (max-width: 1024px) {
+    .collection-item3 img {
+      width: 250px;
+      height: 350px;
+    }
+    .explore-collections-section3 .section-title3 {
+      font-size: 22px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .collection-item3 img {
+      width: 200px;
+      height: 300px;
+    }
+    .explore-collections-section3 .section-title3 {
+      font-size: 20px;
+    }
+    .collections-wrapper3 {
+      margin: 20px;
+      gap: 10px;
+    }
+    .collection-button3 {
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+  }
+  @media (max-width: 480px) {
+    .collection-item3 img {
+      width: 150px;
+      height: 250px;
+    }
+    .explore-collections-section3 .section-title3 {
+      font-size: 18px;
+    }
+    .collections-wrapper3 {
+      margin: 10px;
+      gap: 8px;
+    }
+    .collection-button3 {
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+  }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.querySelector('.collections-wrapperr');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      slider.classList.add('active');
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+      isDown = false;
+      slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mouseup', () => {
+      isDown = false;
+      slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 3; //scroll-fast
+      slider.scrollLeft = scrollLeft - walk;
+    });
+  });
+</script>
+{% schema %}
+  {
+  "name": "Collection list",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Explore Collections"
+    },
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Select Collections",
+    }
+  ],
+  "presets": [
+    {
+      "name": "collection-list",
+      "category": "Collection Sections"
+    }
+  ]
+}
+{% endschema %}
