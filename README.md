@@ -10,18 +10,17 @@ The theme is built to be clean, responsive, and easy to customize, following Sho
 
 The project was created to:
 
-* Demonstrate proficiency with **Shopify Liquid**, **HTML**, **CSS**, and **JavaScript**
+* Demonstrate proficiency with **Shopify Liquid**, **CSS**, and **JavaScript**
 * Show understanding of Shopify theme architecture
 * Build reusable and customizable sections
 * Apply responsive design principles
-* Follow clean and readable code practices
 
 ## Technologies Used
 
 * **Shopify Liquid**
-* **HTML5**
-* **CSS3**
+* **CSS**
 * **JavaScript**
+* **JSON templates**
 * **Shopify Theme Architecture**
 
 ## Theme Structure
